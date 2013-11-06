@@ -15,8 +15,6 @@
 # limitations under the License.
 #
 
-service "php-fpm"
-
 ####### Session Caching #######
 node.set[:magento][:session][:save] = 'memcache'
 

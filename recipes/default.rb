@@ -1,3 +1,5 @@
+service "php-fpm"
+
 unless File.exist?("#{node[:magento][:dir]}/.installed")
 
   require 'time'
