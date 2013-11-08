@@ -94,9 +94,11 @@ template "#{node[:memcache][:config_dir]}/memcached_sessions.conf" do
   variables(
     :memory => node[:memcached][:memory],
     :port => node[:memcached][:port],
+    :udp_port => node[:magento][:memcached][:slow_backend][:port],
     :user => node[:memcached][:user],
     :listen => node[:memcached][:listen],
-    :maxconn => node[:memcached][:maxconn]
+    :maxconn => node[:memcached][:maxconn],
+    :max_object_size => node[:memcached][:max_object_size]
   )
 end
 
@@ -120,10 +122,12 @@ template "#{node[:memcache][:config_dir]}/memcached_backend.conf" do
   variables(
     :memory => node[:magento][:memcached][:slow_backend][:memory],
     :port => node[:magento][:memcached][:slow_backend][:port],
+    :udp_port => node[:magento][:memcached][:slow_backend][:port],
     :user => node[:memcached][:user],
     :group => node[:memcached][:group],
     :listen => node[:magento][:memcached][:slow_backend][:listen],
-    :maxconn => node[:magento][:memcached][:slow_backend][:maxconn] 
+    :maxconn => node[:magento][:memcached][:slow_backend][:maxconn],
+    :max_object_size => node[:magento][:memcached][:slow_backend][:max_object_size]
   )
 end
 

@@ -87,6 +87,7 @@ default[:magento][:admin_user][:password] = 'magPass.123' # Required
 default[:magento][:memcached][:sessions][:memory] = 512
 default[:magento][:memcached][:sessions][:port] = 11211
 default[:magento][:memcached][:sessions][:maxconn] = 2048 
+default[:magento][:memcached][:sessions][:max_object_size] = '8k'
 default[:magento][:memcached][:sessions][:listen] = "127.0.0.1"
 default[:magento][:memcached][:sessions][:interface] = "eth1"
 default[:magento][:memcached][:clients] = []
@@ -95,6 +96,7 @@ default[:magento][:memcached][:clients] = []
 default[:magento][:memcached][:slow_backend][:memory] = 1536
 default[:magento][:memcached][:slow_backend][:port] = 11212
 default[:magento][:memcached][:slow_backend][:maxconn] = 2048
+default[:magento][:memcached][:slow_backend][:max_object_size] = '128k'
 default[:magento][:memcached][:slow_backend][:listen] = "127.0.0.1"
 default[:magento][:memcached][:slow_backend][:interface] = "eth1"
 
