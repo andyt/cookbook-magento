@@ -140,9 +140,6 @@ unless File.exist?("#{node[:magento][:dir]}/.installed")
     recursive true
   end
 
-  # Install and configure nginx
-  magento_site
-
   # Fetch magento release
   unless node[:magento][:download_url].empty?
     remote_file "#{Chef::Config[:file_cache_path]}/magento.tar.gz" do
