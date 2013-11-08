@@ -1,5 +1,8 @@
 service "php-fpm"
 
+# Install and configure nginx
+magento_site
+
 unless File.exist?("#{node[:magento][:dir]}/.installed")
 
   require 'time'
