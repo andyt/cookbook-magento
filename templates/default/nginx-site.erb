@@ -5,14 +5,15 @@ map $http_x_forwarded_proto $https_offloaded {
 }
 <% end %>
 
-server {
 <% if @ssl %>
-        log_format ssl_show_upstream '$remote_addr - $remote_user [$time_local] "$request" '
+log_format ssl_show_upstream '$remote_addr - $remote_user [$time_local] "$request" '
 <% else %>
-        log_format show_upstream '$remote_addr - $remote_user [$time_local] "$request" '
+log_format show_upstream '$remote_addr - $remote_user [$time_local] "$request" '
 <% end %>
-                '$status $body_bytes_sent "$http_referer" '
-                '"$http_user_agent" - $upstream_addr $upstream_status $upstream_response_time';
+        '$status $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" - $upstream_addr $upstream_status $upstream_response_time';    
+
+server {
 <% if @ssl %>
         listen <%= @https %>;
         ssl on;
