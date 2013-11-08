@@ -1,5 +1,8 @@
 service "php-fpm"
 
+# Install and configure nginx
+magento_site
+
 unless File.exist?("#{node[:magento][:dir]}/.installed")
 
   require 'time'
@@ -136,9 +139,6 @@ unless File.exist?("#{node[:magento][:dir]}/.installed")
     action :create
     recursive true
   end
-
-  # Install and configure nginx
-  magento_site
 
   # Fetch magento release
   unless node[:magento][:download_url].empty?
