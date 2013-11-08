@@ -63,14 +63,8 @@ server {
                 <% if @ssl %>fastcgi_param  HTTPS on;<% end %>
         }
 
-        ## Needed for Fooman Speedster js/css minification
-        location ^~ /minify/ { 
-            rewrite ^/minify/([0-9]+)(/.*\.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
-            expires 1y;
-        }
-        location ^~ /lib/minify/ { allow all; }
-
         location ~\.php$ {
+                if (!-e $request_filename) { rewrite / /index.php last; }
                 expires        off; ## Do not cache dynamic content
                 fastcgi_pass  $fcgi_pass;
                 fastcgi_index  index.php;
@@ -87,4 +81,9 @@ server {
                 expires           1h;
                 <% if @ssl %>fastcgi_param  HTTPS on;<% end %>
         }
+
+        ## For Fooman Speedster js/css minification
+        rewrite ^/minify/([0-9]+)(/.*.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
+        rewrite ^/skin/m/([0-9]+)(/.*.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
+        location /lib/minify/ { allow all; }
 }
