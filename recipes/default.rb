@@ -1,4 +1,6 @@
-service "php-fpm"
+service "php-fpm" do
+  service_name "php5-fpm"
+end
 
 # Install and configure nginx
 magento_site
