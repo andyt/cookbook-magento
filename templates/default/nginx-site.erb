@@ -62,6 +62,11 @@ server {
                 autoindex            on;
                 <% if @ssl %>fastcgi_param  HTTPS on;<% end %>
         }
+        ## Needed for Fooman Speedster
+        location /minify/ { 
+            rewrite ^/minify/([0-9]+)(/.*\.(js|css))$ /lib/minify/m.php?f=$2&d=$1 last;
+            expires 1y;
+        }
         location ~\.php$ {
                 expires        off; ## Do not cache dynamic content
                 fastcgi_pass  $fcgi_pass;
