@@ -26,26 +26,23 @@ define :magento_site do
       owner "root"
       group "root"
       mode "0600"
-      action :create_if_missing
     end
-    if defined?(node[:magento][:ssl][:ca]) 
+    if node[:magento][:ssl][:ca].nil? || node[:magento][:ssl][:ca].empty?
+      certpath = "#{node[:nginx][:dir]}/ssl/#{sitedomain}.crt"
+    else
       file "#{node[:nginx][:dir]}/ssl/#{sitedomain}.ca" do
         content node[:magento][:ssl][:ca]
         owner "root"
         group "root"
         mode "0644"
-        action :create_if_missing
       end
       certpath = "#{node[:nginx][:dir]}/ssl/#{sitedomain}.certificate"
-    else
-      certpath = "#{node[:nginx][:dir]}/ssl/#{sitedomain}.crt"
     end
     file "#{certpath}" do
       content node[:magento][:ssl][:cert]
       owner "root"
       group "root"
       mode "0644"
-      action :create_if_missing
     end
 
     if !File.exists?("#{node[:nginx][:dir]}/ssl/#{sitedomain}.crt") || File.zero?("#{node[:nginx][:dir]}/ssl/#{sitedomain}.crt") 
@@ -60,7 +57,6 @@ define :magento_site do
         mode 0644
         owner "root"
         group "root"
-        action :create_if_missing
         notifies :run, resources(:bash => "Combine Certificate and Intermediate Certificates"), :immediately
       end
     end
