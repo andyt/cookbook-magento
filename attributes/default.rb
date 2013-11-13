@@ -26,6 +26,14 @@ default[:magento][:secure_base_url] = "https://example.com/"
 default[:magento][:use_secure_admin] = "yes"
 default[:magento][:enable_charts] = "yes"
 
+# Magento multi-site run code mappings. Currenly only implemented for Nginx, 
+# using the map command: http://nginx.org/en/docs/http/ngx_http_map_module.html.
+#
+# Example:
+#
+#   { 'default' => 'website1', '.example.com' => 'website2' }
+default[:magento][:run_codes] = {}
+
 # Required packages
 case node[:platform_family]
 when "rhel"

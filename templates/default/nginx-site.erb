@@ -5,6 +5,13 @@ map $http_x_forwarded_proto $https_offloaded {
 }
 <% end %>
 
+<% if node[:magento][:run_codes].any? %>
+map $http_host $mage_run_code {
+    hostnames;
+    <%= node[:magento][:run_codes].collect { |value, code| "#{value} #{code};" }.join("\n    ") %>
+}
+<% end %>
+
 <% if @ssl %>
 log_format ssl_show_upstream '$remote_addr - $remote_user [$time_local] "$request" '
 <% else %>
@@ -66,12 +73,13 @@ server {
         location ~\.php$ {
                 if (!-e $request_filename) { rewrite / /index.php last; }
                 expires        off; ## Do not cache dynamic content
-                fastcgi_pass  $fcgi_pass;
+                fastcgi_pass   $fcgi_pass;
                 fastcgi_index  index.php;
                 fastcgi_param  SCRIPT_FILENAME  <%= @path %>$fastcgi_script_name;
-                ## These two lines are only needed for magento vhosts - so commented out for now
-                #fastcgi_param  MAGE_RUN_CODE default; ## Store code is defined in administration > Configuration > Manage Stores
-                #fastcgi_param  MAGE_RUN_TYPE store;
+                <% if node[:magento][:run_codes].any? %>
+                fastcgi_param  MAGE_RUN_CODE $mage_run_code;
+                fastcgi_param  MAGE_RUN_TYPE store;
+                <% end %>
                 include fastcgi_params;
                 <% if @ssl %>fastcgi_param  HTTPS on;<% end %>
         }
