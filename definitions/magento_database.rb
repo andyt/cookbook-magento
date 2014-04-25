@@ -17,7 +17,15 @@ define :magento_database do
     end
 
   else
+    package "libmysqlclient-dev" do
+      action :install
+    end
+
     gem_package "mysql" do
+      action :install
+    end
+
+    chef_gem "mysql" do
       action :install
     end
 
