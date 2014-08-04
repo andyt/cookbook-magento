@@ -1,3 +1,5 @@
+default[:apt][:compiletime] = true
+
 # General settings
 default[:magento][:download_url] = "http://www.magentocommerce.com/downloads/assets/1.7.0.2/magento-1.7.0.2.tar.gz"
 default[:magento][:dir] = "/var/www/magento"
