@@ -82,8 +82,9 @@ default[:magento][:db][:pdoType] = ''
 default[:magento][:db][:active] = '1'
 
 # Database settings
+default[:mysql][:mysql_bin] = "/usr/bin/mysql"
 default[:mysql][:bind_address] = "localhost"
-default[:mysql][:port] = 3306
+default[:mysql][:port] = "3306"
 default[:mysql][:interface] = "eth1"
 default[:mysql][:tunable][:max_allowed_packet]   = "32M"
 

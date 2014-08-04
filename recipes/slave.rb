@@ -10,7 +10,7 @@ unless File.exist?("#{node[:magento][:dir]}/.installed")
   else
     include_recipe "apt"
   end
-  include_recipe "mysql::ruby"
+  #include_recipe "mysql::ruby"
 
   if node.has_key?("ec2")
     server_fqdn = node.ec2.public_hostname
