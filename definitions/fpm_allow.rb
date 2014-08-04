@@ -13,17 +13,18 @@ define :fpm_allow do
   end
 
   node['php-fpm']['pools'].each do |pool|
-    bash "Permit slave nodes of #{pool} to leverage this PHP-FPM setup" do
-      cwd "#{php_conf[0]}/pools/" # php.ini location
+    bash "Permit slave nodes of pool #{pool[:name]} to leverage this PHP-FPM setup" do
+      cwd node['php-fpm']['pool_conf_dir']
       code <<-EOH
-      sed -i 's/listen.allowed_clients = .*/listen.allowed_clients = 127.0.0.1#{permit}/' #{pool}.conf
+      sed -i 's/listen.allowed_clients = .*/listen.allowed_clients = 127.0.0.1#{permit}/' #{pool[:name]}.conf
       EOH
       notifies :restart, resources(:service => "php-fpm")
     end
   end
 
-  # S192.237.183.249etup firewall rules
-  fpm_port = node['php-fpm']['pool']['magento']['listen'].split(":")[1].to_i
+  # Setup firewall rules
+  magento_pool = node['php-fpm']['pools'].detect { |pool| pool[:name] == 'magento' } || raise(RuntimeError, 'No pool found with name "magento".')
+  fpm_port = magento_pool[:listen].split(":")[1].to_i
 
   case node["platform_family"]
   when "rhel", "fedora"
